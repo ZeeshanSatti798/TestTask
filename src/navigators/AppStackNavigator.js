@@ -11,7 +11,7 @@ function AppStackNavigator() {
     return (
         <Stack.Navigator>
             <Stack.Screen name="CurrencyConverter" component={CurrencyConverterScreen} options={{headerShown: false}}/>
-            <Stack.Screen name="Base Currency" component={BaseCurrencyScreen} />
+            <Stack.Screen name="BaseCurrency" component={BaseCurrencyScreen} />
             <Stack.Screen name="Options" component={OptionsScreen} />
             <Stack.Screen name="Themes" component={ThemeScreen} />
         </Stack.Navigator>

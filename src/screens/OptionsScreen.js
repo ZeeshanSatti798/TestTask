@@ -9,19 +9,19 @@ const OptionsScreen = (props) => {
                     props.navigation.navigate('Themes')
                 }}
             >
-                <Text>
+                <Text style={{color:'#000'}}>
                     Themes
                 </Text>
                 <Image source={require('../assets/arrow.png')} style={{ width: 20, height: 20, }} />
             </TouchableOpacity>
             <TouchableOpacity style={{ flexDirection: 'row', padding: 20, justifyContent: 'space-between', backgroundColor: 'white', borderBottomWidth: 0.4, borderColor: 'grey' }}>
-                <Text>
+                <Text style={{color:'#000'}}>
                     Fixer.io
                 </Text>
                 <Image source={require('../assets/chain.png')} style={{ width: 20, height: 20, }} />
             </TouchableOpacity>
             <TouchableOpacity style={{ flexDirection: 'row', padding: 20, justifyContent: 'space-between', backgroundColor: 'white', borderBottomWidth: 0.4, borderColor: 'grey' }}>
-                <Text>
+                <Text style={{color:'#000'}}>
                     Logout
                 </Text>
                 <Image source={require('../assets/arrow-left.png')} style={{ width: 20, height: 20, }} />

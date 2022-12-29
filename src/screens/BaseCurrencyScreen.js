@@ -23,7 +23,7 @@ const BaseCurrencyScreen = props => {
     const row = (currency, index) => {
         return (
             <View key={index} style={{ height: 40, justifyContent: 'center', marginLeft: 20 }}>
-                <Text>{currency}</Text>
+                <Text style={{color:'#000'}}>{currency}</Text>
             </View>
         )
     }
