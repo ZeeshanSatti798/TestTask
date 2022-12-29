@@ -1,11 +1,19 @@
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Animated, Keyboard} from 'react-native'
 import React, {useEffect, useState} from 'react'
 import AntDesign from "react-native-vector-icons/AntDesign";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchCurrencyExchangeRate} from "../store/actions";
 
 const CurrencyConverterScreen = ({navigation,route}) => {
     const [currency1, setCurrency1] = useState("");
+    const [currencyName1, setCurrencyName1] = useState("USD");
+    const [currencyName2, setCurrencyName2] = useState("EUR");
     const [currency2, setCurrency2] = useState("");
     const [logoAnimation] = useState(new Animated.Value(0));
+    const { currency } = useSelector(state => state);
+    const exchangeRate = useSelector(state => state.currency.result);
+    // console.log("currency:",currency?.result)
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
@@ -35,7 +43,21 @@ const CurrencyConverterScreen = ({navigation,route}) => {
         };
     }, []);
 
+    useEffect(() => {
+        console.log(route?.params?.currencyName1)
+        if(route?.params?.currencyName1!==undefined){
+            setCurrencyName1(route?.params?.currencyName1)
+        }
 
+    }, [currency]);
+
+
+    const convert=()=>{
+        dispatch(fetchCurrencyExchangeRate(currencyName1, currencyName2,currency1));
+        // setCurrency2(exchangeRate?.result)
+        setCurrency2(127)
+        console.log("exchangeRate:",exchangeRate?.result)
+    }
 
     return (
         <View style={{ flex: 1, paddingTop: 40, backgroundColor: route?.params?.color==undefined?'#496e7b': route?.params?.color}}>
@@ -50,9 +72,9 @@ const CurrencyConverterScreen = ({navigation,route}) => {
                 </Animated.View>
                 <Text style={{ alignSelf: 'center', marginTop: 50, fontSize: 25, fontWeight: 'bold', color: 'white' }}>Currency Converter</Text>
                 <View style={{ flexDirection: 'row', marginHorizontal: 20,marginTop: 20 }}>
-                    <TouchableOpacity onPress={() => {navigation.navigate('BaseCurrency') }}>
+                    <TouchableOpacity onPress={() => {navigation.navigate('BaseCurrency',{data:"first"})}}>
                         <View style={styles.currencyNameView} >
-                            <Text style={{color:route?.params?.color==undefined?'#496e7b': route?.params?.color,fontWeight:'bold',fontSize:18}}>USD</Text>
+                            <Text style={{color:route?.params?.color==undefined?'#496e7b': route?.params?.color,fontWeight:'bold',fontSize:18}}>{currencyName1}</Text>
                         </View>
                     </TouchableOpacity>
                     <TextInput
@@ -63,15 +85,15 @@ const CurrencyConverterScreen = ({navigation,route}) => {
                     />
                 </View>
                 <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
-                    <TouchableOpacity onPress={() => {navigation.navigate('BaseCurrency') }}>
+                    <TouchableOpacity onPress={() => {navigation.navigate('BaseCurrency',{data:"second"}) }}>
                         <View style={styles.currencyNameView} >
-                            <Text style={{color:route?.params?.color==undefined?'#496e7b': route?.params?.color,fontWeight:'bold',fontSize:18}}>GBP</Text>
+                            <Text style={{color:route?.params?.color==undefined?'#496e7b': route?.params?.color,fontWeight:'bold',fontSize:18}}>{currencyName2}</Text>
                         </View>
                     </TouchableOpacity>
                     <TextInput
                         style={styles.input}
-                        onChangeText={setCurrency2}
-                        value={currency2}
+                        // onChangeText={setCurrency1}
+                        value={currency1}
                         keyboardType={'number-pad'}
                     />
                 </View>
@@ -79,6 +101,7 @@ const CurrencyConverterScreen = ({navigation,route}) => {
                 <TouchableOpacity
                     style={{ marginTop: 20,flexDirection:'row',alignItems:'center',justifyContent:'center'}}
                     onPress={() => {
+                        convert();
                     // props.navigation.navigate('Base Currency')
                 }}>
                     <AntDesign name={"retweet"} color={"#fff"} size={22}/>

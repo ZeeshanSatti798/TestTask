@@ -1,30 +1,36 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import {ScrollView, StyleSheet, Text, TouchableHighlight, View} from 'react-native'
 import React from 'react'
 
 const currencies = [
-    'ASD',
-    'USD',
-    'SAD',
-    'OPI',
-    'ASD',
-    'ASD',
-    'ASD',
-    'ASD',
-    'ASD',
-    'ASD',
-    'ASD',
-    'ASD',
-    'ASD',
-    'ASD',
+    'AUD',
+    'BGN',
+    'BRL',
+    'CAD',
+    'CHF',
+    'CNY',
+    'CZK',
+    'DKK',
+    'EUR',
+    'GBP',
+    'HKD',
+    'HRK',
 ]
 
-const BaseCurrencyScreen = props => {
+const BaseCurrencyScreen = ({navigation,route}) => {
 
     const row = (currency, index) => {
         return (
-            <View key={index} style={{ height: 40, justifyContent: 'center', marginLeft: 20 }}>
+            <TouchableHighlight onPress={()=>{
+                if(route?.params?.data=="first"){
+                    navigation.navigate("CurrencyConverter",{currencyName1:currency})
+                }else {
+                    navigation.navigate("CurrencyConverter",{currencyName2:currency})
+                }
+            }} key={index}
+                                style={{ height: 40, justifyContent: 'center', marginLeft: 20 }}
+            >
                 <Text style={{color:'#000'}}>{currency}</Text>
-            </View>
+            </TouchableHighlight>
         )
     }
 
