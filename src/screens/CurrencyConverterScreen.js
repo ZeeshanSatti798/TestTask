@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react'
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencyExchangeRate} from "../store/actions";
+import moment from "moment";
 
 const CurrencyConverterScreen = ({navigation,route}) => {
     const [currency1, setCurrency1] = useState("");
@@ -12,6 +13,8 @@ const CurrencyConverterScreen = ({navigation,route}) => {
     const [logoAnimation] = useState(new Animated.Value(0));
     const { currency } = useSelector(state => state);
     const exchangeRate = useSelector(state => state.currency.result);
+    const currencyName = useSelector(state => state.currency.currency);
+    const secondCurrency = useSelector(state => state.currency.secondCurrency);
     // console.log("currency:",currency?.result)
     const dispatch = useDispatch();
 
@@ -34,6 +37,7 @@ const CurrencyConverterScreen = ({navigation,route}) => {
                     duration: 1000,
                     useNativeDriver: false,
                 }).start();
+                dispatch(fetchCurrencyExchangeRate(currencyName, secondCurrency,currency1))
             }
         );
 
@@ -43,20 +47,9 @@ const CurrencyConverterScreen = ({navigation,route}) => {
         };
     }, []);
 
-    useEffect(() => {
-        console.log(route?.params?.currencyName1)
-        if(route?.params?.currencyName1!==undefined){
-            setCurrencyName1(route?.params?.currencyName1)
-        }
-
-    }, [currency]);
-
-
     const convert=()=>{
-        dispatch(fetchCurrencyExchangeRate(currencyName1, currencyName2,currency1));
-        // setCurrency2(exchangeRate?.result)
-        setCurrency2(127)
-        console.log("exchangeRate:",exchangeRate?.result)
+        dispatch(fetchCurrencyExchangeRate(currencyName, secondCurrency,currency1))
+        setCurrency2((exchangeRate?.result).toString())
     }
 
     return (
@@ -74,38 +67,38 @@ const CurrencyConverterScreen = ({navigation,route}) => {
                 <View style={{ flexDirection: 'row', marginHorizontal: 20,marginTop: 20 }}>
                     <TouchableOpacity onPress={() => {navigation.navigate('BaseCurrency',{data:"first"})}}>
                         <View style={styles.currencyNameView} >
-                            <Text style={{color:route?.params?.color==undefined?'#496e7b': route?.params?.color,fontWeight:'bold',fontSize:18}}>{currencyName1}</Text>
+                            <Text style={{color:route?.params?.color==undefined?'#496e7b': route?.params?.color,fontWeight:'bold',fontSize:18}}>{currencyName!==undefined?currencyName:currencyName1}</Text>
                         </View>
                     </TouchableOpacity>
                     <TextInput
                         style={styles.input}
                         onChangeText={setCurrency1}
                         value={currency1}
+                        onSubmitEditing={()=>{
+                            dispatch(fetchCurrencyExchangeRate(currencyName, secondCurrency,currency1))
+                        }}
                         keyboardType={'number-pad'}
                     />
                 </View>
                 <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
-                    <TouchableOpacity onPress={() => {navigation.navigate('BaseCurrency',{data:"second"}) }}>
+                    <TouchableOpacity onPress={() => {navigation.navigate('ConversionCurrency',{data:"second"})}}>
                         <View style={styles.currencyNameView} >
-                            <Text style={{color:route?.params?.color==undefined?'#496e7b': route?.params?.color,fontWeight:'bold',fontSize:18}}>{currencyName2}</Text>
+                            <Text style={{color:route?.params?.color==undefined?'#496e7b': route?.params?.color,fontWeight:'bold',fontSize:18}}>{secondCurrency!==undefined?secondCurrency:currencyName2}</Text>
                         </View>
                     </TouchableOpacity>
                     <TextInput
+                        editable={false}
                         style={styles.input}
-                        // onChangeText={setCurrency1}
-                        value={currency1}
+                        value={exchangeRate?.result!==undefined?((exchangeRate?.result).toString()):currency2}
                         keyboardType={'number-pad'}
                     />
                 </View>
-                <Text style={{ alignSelf: 'center', marginBottom: 20, fontSize: 15, color: 'white', marginTop: 20 }}>1 usd = 0.2323 as of Sep 23</Text>
+                <Text style={{ alignSelf: 'center', marginBottom: 20, fontSize: 15, color: 'white', marginTop: 20 }}>{currency1/currency1} {currencyName!==undefined?currencyName:currencyName1} = {exchangeRate?.result!==undefined?((exchangeRate?.result).toString()/currency1):currency2/currency1} {secondCurrency!==undefined?secondCurrency:currencyName2} as of {moment().format('MMMM Do YYYY')}</Text>
                 <TouchableOpacity
                     style={{ marginTop: 20,flexDirection:'row',alignItems:'center',justifyContent:'center'}}
-                    onPress={() => {
-                        convert();
-                    // props.navigation.navigate('Base Currency')
-                }}>
+                    onPress={convert}>
                     <AntDesign name={"retweet"} color={"#fff"} size={22}/>
-                    <Text style={{ marginLeft: 15, fontSize: 15, color: 'white', }}>Reverse Currencies</Text>
+                    <Text style={{ marginLeft: 15, fontSize: 15, color: 'white', }}>Convert Currencies</Text>
                 </TouchableOpacity>
 
             </View>

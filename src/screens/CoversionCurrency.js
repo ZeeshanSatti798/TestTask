@@ -1,7 +1,7 @@
 import {ScrollView, StyleSheet, Text, TouchableHighlight, View} from 'react-native'
 import React from 'react'
 import {useDispatch} from "react-redux";
-import {selectCurreny} from "../store/actions";
+import {convertCurrency, selectCurreny} from "../store/actions";
 
 const currencies = [
     'AUD',
@@ -18,14 +18,14 @@ const currencies = [
     'HRK',
 ]
 
-const BaseCurrencyScreen = ({navigation,route}) => {
+const ConversionCurrency = ({navigation,route}) => {
     const dispatch = useDispatch();
 
     const row = (currency, index) => {
         return (
             <TouchableHighlight onPress={()=>{
-                dispatch(selectCurreny(currency))
-                navigation.navigate("CurrencyConverter",{currencyName1:currency})
+                dispatch(convertCurrency(currency))
+                navigation.navigate("CurrencyConverter",{currencyName2:currency})
             }} key={index}
                                 style={{ height: 40, justifyContent: 'center', marginLeft: 20 }}
             >
@@ -43,6 +43,6 @@ const BaseCurrencyScreen = ({navigation,route}) => {
     )
 }
 
-export default BaseCurrencyScreen
+export default ConversionCurrency;
 
 const styles = StyleSheet.create({})
