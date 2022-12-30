@@ -26,7 +26,7 @@ const BaseCurrencyScreen = ({navigation,route}) => {
         return (
             <TouchableHighlight onPress={()=>{
                 dispatch(selectCurreny(currency))
-                navigation.navigate("CurrencyConverter",{currencyName1:currency})
+                navigation.navigate("CurrencyConverter")
             }} key={index}
                                 style={{ height: 40, justifyContent: 'center', marginLeft: 20 }}
             >

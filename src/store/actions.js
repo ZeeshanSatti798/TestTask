@@ -5,7 +5,7 @@ export function fetchCurrencyExchangeRate(baseCurrency, targetCurrency,amount) {
   return function(dispatch) {
     var myHeaders = new Headers();
     // myHeaders.append("apikey", "AwNIeh6vaHdWqLzuZ6NyqoRMxGrBHOlR");
-    myHeaders.append("apikey", "1N08O8onz5Z1aJVfURDuL4pDDU3pd66C");
+    myHeaders.append("apikey", "y3eP6Z289KJou3mOaPbmuTiDKTMaVgsK");
 
     var requestOptions = {
       method: 'GET',
@@ -15,7 +15,7 @@ export function fetchCurrencyExchangeRate(baseCurrency, targetCurrency,amount) {
     fetch(`https://api.apilayer.com/fixer/convert?to=${baseCurrency}&from=${targetCurrency}&amount=${amount}`,requestOptions)
         .then(response => response.json())
         .then(data => {
-          console.log("Result:",data?.result)
+          console.log("Result:",data)
           // Dispatch an action with the exchange rate data
           dispatch({ type: 'FETCH_CURRENCY_EXCHANGE_RATE_SUCCESS', payload: data });
         })

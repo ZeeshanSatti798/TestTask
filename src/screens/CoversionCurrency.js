@@ -25,9 +25,9 @@ const ConversionCurrency = ({navigation,route}) => {
         return (
             <TouchableHighlight onPress={()=>{
                 dispatch(convertCurrency(currency))
-                navigation.navigate("CurrencyConverter",{currencyName2:currency})
+                navigation.navigate("CurrencyConverter")
             }} key={index}
-                                style={{ height: 40, justifyContent: 'center', marginLeft: 20 }}
+                                style={styles.currencyText}
             >
                 <Text style={{color:'#000'}}>{currency}</Text>
             </TouchableHighlight>
@@ -35,7 +35,7 @@ const ConversionCurrency = ({navigation,route}) => {
     }
 
     return (
-        <View style={{ flex: 1, backgroundColor: 'white', paddingTop: 20 }}>
+        <View style={styles.container}>
             <ScrollView>
                 {currencies.map((item, index) => row(item, index))}
             </ScrollView>
@@ -45,4 +45,15 @@ const ConversionCurrency = ({navigation,route}) => {
 
 export default ConversionCurrency;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container:{
+        flex: 1,
+        backgroundColor: 'white',
+        paddingTop: 20
+    },
+    currencyText:{
+        height: 40,
+        justifyContent: 'center',
+        marginLeft: 20
+    }
+})

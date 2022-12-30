@@ -4,6 +4,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchCurrencyExchangeRate} from "../store/actions";
 import moment from "moment";
+import {persistor} from "../store/store";
 
 const CurrencyConverterScreen = ({navigation,route}) => {
     const [currency1, setCurrency1] = useState("");
@@ -18,6 +19,8 @@ const CurrencyConverterScreen = ({navigation,route}) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        persistor.flush();
+        persistor.purge();
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
             () => {
