@@ -15,7 +15,6 @@ const CurrencyConverterScreen = ({navigation,route}) => {
     const exchangeRate = useSelector(state => state.currency.result);
     const currencyName = useSelector(state => state.currency.currency);
     const secondCurrency = useSelector(state => state.currency.secondCurrency);
-    // console.log("currency:",currency?.result)
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -48,8 +47,14 @@ const CurrencyConverterScreen = ({navigation,route}) => {
     }, []);
 
     const convert=()=>{
-        dispatch(fetchCurrencyExchangeRate(currencyName, secondCurrency,currency1))
-        setCurrency2((exchangeRate?.result).toString())
+        if(currencyName==''){
+            alert("Please select first currency!")
+        }else if (secondCurrency==""){
+            alert("Please select Second currency!")
+        }else {
+            dispatch(fetchCurrencyExchangeRate(currencyName, secondCurrency,currency1))
+            // setCurrency2((exchangeRate?.result).toString())
+        }
     }
 
     return (

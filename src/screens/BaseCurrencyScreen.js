@@ -5,6 +5,7 @@ import {selectCurreny} from "../store/actions";
 
 const currencies = [
     'AUD',
+    'USD',
     'BGN',
     'BRL',
     'CAD',
